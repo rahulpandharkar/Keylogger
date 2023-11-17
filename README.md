@@ -10,14 +10,14 @@ Python file which automates the installation of the "keyboard" module even when 
 Furthermore, it will send all the keylogs to a local server (server.js). 
 Addtionally, it will also save the keylogs to a file "keylogs.txt". 
 
-**2. Website Keylogger: **
-_Modules used: "flask", "request", "json", "CORS" _
+**2. Website Keylogger:**
+_Modules used: "flask", "request", "json", "CORS"_
 
 A webpage when opened will continue logging all the keystrokes provided you are ON the webpage. 
 It prints the keys pressed to the console and sennds it to a local server (server.py). 
 Addtionally, it will log the keystrokes in a file named "keys.txt" 
 
-**3. Terminal Keylogger: **
+**3. Terminal Keylogger:**
 _Modules used:
 Python - "flask", "request"
 Node - "keypress", "axios"_
