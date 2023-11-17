@@ -2,6 +2,7 @@
 A functionality that will capture the keyboard activity of a user, i.e. Keylogging
 
 **1. System Keylogger:**
+
 _Modules used:
 Python - "keyboard", "subprocess", "sys", "os", "requests"
 Node - "express", "cors", "body-parser"_
@@ -11,6 +12,7 @@ Furthermore, it will send all the keylogs to a local server (server.js).
 Addtionally, it will also save the keylogs to a file "keylogs.txt". 
 
 **2. Website Keylogger:**
+
 _Modules used: "flask", "request", "json", "CORS"_
 
 A webpage when opened will continue logging all the keystrokes provided you are ON the webpage. 
@@ -18,6 +20,7 @@ It prints the keys pressed to the console and sennds it to a local server (serve
 Addtionally, it will log the keystrokes in a file named "keys.txt" 
 
 **3. Terminal Keylogger:**
+
 _Modules used:
 Python - "flask", "request"
 Node - "keypress", "axios"_
