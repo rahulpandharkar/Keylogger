@@ -8,7 +8,7 @@ pipeline:
       steps:
         - script:
             - echo 'Checking out code from GitHub'
-            - git checkout <your_repository_url>
+            - git checkout https://github.com/rahulpandharkar/Keylogger
 
     - stage: Build
       steps:
